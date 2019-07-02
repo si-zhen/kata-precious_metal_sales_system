@@ -2,6 +2,8 @@ package com.coding.sales;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,7 +117,12 @@ public class OrderApp {
 			PaymentRepresentation pays = new PaymentRepresentation(pay.getType(), pay.getAmount());
 			payments.add(pays);
 		}
-        result = new OrderRepresentation(command.getOrderId(), new Date(), 
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(command.getCreateTime());
+		} catch (ParseException e) {
+		}
+        result = new OrderRepresentation(command.getOrderId(), date, 
         		member.getMemberId(), member.getName(), 
         		oldMemberType, 
         		member.getLevel().getLevelDesc(), 
