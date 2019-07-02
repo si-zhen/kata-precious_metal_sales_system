@@ -33,4 +33,9 @@ public class DiscountNinety extends AbstractDiscountStrategy {
 		return result;
 	}
 
+	@Override
+	public String getTag() {
+		return "9折券";
+	}
+
 }

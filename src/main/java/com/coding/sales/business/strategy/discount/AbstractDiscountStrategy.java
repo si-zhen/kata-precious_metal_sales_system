@@ -19,5 +19,7 @@ public abstract class AbstractDiscountStrategy {
 	 * @return 打折后的金额
 	 */
 	public abstract Result calRealPay(BigDecimal totalMoney);
+	
+	public abstract String getTag();
 
 }
