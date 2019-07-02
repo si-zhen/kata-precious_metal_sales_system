@@ -12,11 +12,11 @@ public class Constants {
 	/**
 	 * 95折
 	 */
-	public static final String NINETYFIVE = "9.5";
+	public static final String NINETYFIVE = "0.95";
 	/**
 	 * 9折
 	 */
-	public static final String NINETY = "9";
+	public static final String NINETY = "0.9";
 	/**
 	 * 三千
 	 */

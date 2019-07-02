@@ -2,6 +2,8 @@ package com.coding.sales.business.strategy.discount;
 
 import java.math.BigDecimal;
 
+import com.coding.sales.business.bean.Result;
+
 /**
  * 打折策略
  * 
@@ -16,6 +18,6 @@ public abstract class AbstractDiscountStrategy {
 	 *            原总金额
 	 * @return 打折后的金额
 	 */
-	public abstract BigDecimal calRealPay(BigDecimal totalMoney);
+	public abstract Result calRealPay(BigDecimal totalMoney);
 
 }
