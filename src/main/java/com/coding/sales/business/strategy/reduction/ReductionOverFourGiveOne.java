@@ -41,4 +41,9 @@ public class ReductionOverFourGiveOne extends AbstractReductionStrategy {
 		return result;
 	}
 
+	@Override
+	public String getTag() {
+		return "threetoone";
+	}
+
 }

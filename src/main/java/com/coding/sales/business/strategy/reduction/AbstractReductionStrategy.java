@@ -22,4 +22,10 @@ public abstract class AbstractReductionStrategy {
 	 */
 	public abstract Result calRealPay(BigDecimal unitPrice, int amount);
 	
+	/**
+	 * 获取满减标识
+	 *
+	 * @return
+	 */
+	public abstract String getTag();
 }

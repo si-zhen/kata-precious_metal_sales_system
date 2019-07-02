@@ -42,4 +42,9 @@ public class ReductionOverThreeThousand extends AbstractReductionStrategy {
 		return result;
 	}
 
+	@Override
+	public String getTag() {
+		return "threethousand";
+	}
+
 }

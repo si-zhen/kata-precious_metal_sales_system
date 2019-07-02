@@ -112,4 +112,19 @@ public class Metal {
 		this.reductionStrategies.add(reductionStrategy);
 		return this;
 	}
+	
+	/**
+	 * 是否拥有指定的满减策略
+	 *
+	 * @param strategy 满减策略
+	 * @return
+	 */
+	public boolean hasStrategy(AbstractReductionStrategy strategy){
+		for (AbstractReductionStrategy reductionStrategy : reductionStrategies) {
+			if(reductionStrategy.getTag().equals(strategy.getTag())){
+				return true;
+			}
+		}
+		return false;
+	}
 }

@@ -41,4 +41,9 @@ public class ReductionOverThreeGiveHalf extends AbstractReductionStrategy {
 		return result;
 	}
 
+	@Override
+	public String getTag() {
+		return "threehalf";
+	}
+
 }
