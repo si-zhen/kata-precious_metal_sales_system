@@ -3,19 +3,24 @@ package com.coding.sales;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.coding.sales.business.bean.Member;
 import com.coding.sales.business.bean.Metal;
 import com.coding.sales.business.calculate.CalculateDiscountUtil;
 import com.coding.sales.business.calculate.CalculateDiscountUtil.CalculateDiscountResult;
+import com.coding.sales.business.constants.MemberLevel;
 import com.coding.sales.business.db.MemberInfo;
 import com.coding.sales.business.db.MetalInfo;
 import com.coding.sales.business.utils.MathUtil;
 import com.coding.sales.input.OrderCommand;
 import com.coding.sales.input.OrderItemCommand;
+import com.coding.sales.input.PaymentCommand;
+import com.coding.sales.output.DiscountItemRepresentation;
 import com.coding.sales.output.OrderItemRepresentation;
 import com.coding.sales.output.OrderRepresentation;
+import com.coding.sales.output.PaymentRepresentation;
 
 /**
  * 销售系统的主入口
@@ -50,17 +55,23 @@ public class OrderApp {
         //TODO: 请完成需求指定的功能
         
         String memberId = command.getMemberId();
+        List<PaymentCommand> payment = command.getPayments();
+        List<String> discountCards = command.getDiscounts();
         Member member = MemberInfo.findMemberById(memberId);
+        int oldPoint = member.getPoint();
         String oldMemberType = member.getLevel().getLevelDesc();
         
-        List<String> discountTickets = command.getDiscounts();
+        List<String> discountTickets = discountCards;
         
         
         List<OrderItemRepresentation> orderItems = new ArrayList<>();
-        
+        List<DiscountItemRepresentation> discounts = new ArrayList<>();
         // 购买商品
 		List<OrderItemCommand> items = command.getItems();
+		
 		BigDecimal totalPrice = new BigDecimal(0);
+		BigDecimal receivables = new BigDecimal(0);
+		BigDecimal totalDiscountPrice = new BigDecimal(0);
 		for (OrderItemCommand orderItemCommand : items) {
 			String productId = orderItemCommand.getProduct();
 			Metal metal = MetalInfo.findMetalById(productId);
@@ -69,17 +80,29 @@ public class OrderApp {
 			OrderItemRepresentation orderItem = new OrderItemRepresentation(productId, metal.getName(),
 					metal.getPrice(), orderItemCommand.getAmount(), total);
 			orderItems.add(orderItem);
-			
 			CalculateDiscountResult discountResult = CalculateDiscountUtil.calMiniestPay(metal, orderItemCommand.getAmount(), discountTickets);
 			
+			DiscountItemRepresentation discountItemRepresentation = new DiscountItemRepresentation(memberId, metal.getName(), discountResult.getDiscountMoney());
+			discounts.add(discountItemRepresentation);
 			
-			
+			totalDiscountPrice.add(discountResult.getDiscountMoney());
 			totalPrice.add(total);
 		}
-        
-        
-        
-        result = new OrderRepresentation(command.getOrderId(), command.getCreateTime(), 
+        //支付整数金额
+		BigDecimal integerTotal = receivables.setScale(0, RoundingMode.DOWN);
+		//新增积分
+		int memberPointsIncreased = member.getPopintStrategy().calculatePoints(integerTotal);
+        //新总积分
+		int memberPoints = oldPoint + memberPointsIncreased;
+		//更新用户等级
+		level(member, memberPoints);
+		//获取并设置支付方式
+		List<PaymentRepresentation> payments = new ArrayList<>();
+		for(PaymentCommand pay : payment){
+			PaymentRepresentation pays = new PaymentRepresentation(pay.getType(), pay.getAmount());
+			payments.add(pays);
+		}
+        result = new OrderRepresentation(command.getOrderId(), new Date(), 
         		member.getMemberId(), member.getName(), 
         		oldMemberType, 
         		member.getLevel().getLevelDesc(), 
@@ -96,4 +119,16 @@ public class OrderApp {
 
         return result;
     }
+
+	private void level(Member member, int memberPoints) {
+		if(memberPoints < 10000){
+			member.setLevel(MemberLevel.NORMAL);
+		}else if(memberPoints >= 10000 && memberPoints < 50000){
+			member.setLevel(MemberLevel.GOLD);
+		}else if(memberPoints >= 5000 && memberPoints < 100000){
+			member.setLevel(MemberLevel.PLATINUM);
+		}else if(memberPoints >= 100000){
+			member.setLevel(MemberLevel.DIAMONDS);
+		}
+	}
 }
