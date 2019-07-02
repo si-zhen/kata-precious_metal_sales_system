@@ -15,10 +15,10 @@ public class MemberInfo {
 	private static Map<String, Member> infoMap = new HashMap<>();
 
 	static {
-		infoMap.put("6236609999", new Member("马丁", MemberLevel.NORMAL, "6236609999", "9860"));
-		infoMap.put("6630009999", new Member("王立", MemberLevel.GOLD, "6630009999", "48860"));
-		infoMap.put("8230009999", new Member("李想", MemberLevel.PLATINUM, "8230009999", "98860"));
-		infoMap.put("9230009999", new Member("张三", MemberLevel.DIAMONDS, "9230009999", "198860"));
+		infoMap.put("6236609999", new Member("马丁", MemberLevel.NORMAL, "6236609999", 9860));
+		infoMap.put("6630009999", new Member("王立", MemberLevel.GOLD, "6630009999", 48860));
+		infoMap.put("8230009999", new Member("李想", MemberLevel.PLATINUM, "8230009999", 98860));
+		infoMap.put("9230009999", new Member("张三", MemberLevel.DIAMONDS, "9230009999", 198860));
 	}
 
 	/**

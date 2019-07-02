@@ -25,7 +25,7 @@ public class Member {
 	/**
 	 * 会员积分
 	 */
-	private String point;
+	private int point;
 
 	public String getName() {
 		return name;
@@ -43,11 +43,11 @@ public class Member {
 		this.memberId = memberId;
 	}
 
-	public String getPoint() {
+	public int getPoint() {
 		return point;
 	}
 
-	public void setPoint(String point) {
+	public void setPoint(int point) {
 		this.point = point;
 	}
 
@@ -59,7 +59,7 @@ public class Member {
 		this.level = level;
 	}
 
-	public Member(String name, MemberLevel level, String memberId, String point) {
+	public Member(String name, MemberLevel level, String memberId, int point) {
 		super();
 		this.name = name;
 		this.level = level;
