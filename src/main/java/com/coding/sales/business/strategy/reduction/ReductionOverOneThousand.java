@@ -2,6 +2,10 @@ package com.coding.sales.business.strategy.reduction;
 
 import java.math.BigDecimal;
 
+import com.coding.sales.business.bean.Result;
+import com.coding.sales.business.constants.Constants;
+import com.coding.sales.business.utils.MathUtil;
+
 /**
  * 每满1000减10
  * 
@@ -10,8 +14,32 @@ import java.math.BigDecimal;
 public class ReductionOverOneThousand extends AbstractReductionStrategy {
 
 	@Override
-	public BigDecimal calRealPay(BigDecimal unitPrice, int amount) {
-		return null;
+	public Result calRealPay(BigDecimal unitPrice, int amount) {
+		Result result = new Result();
+		//总金额
+		BigDecimal allTotal = null;
+		//应付金额
+		BigDecimal realTotal = null;
+		//优惠金额
+		BigDecimal discountAmount = null;
+		
+		if(unitPrice == null || amount <= 0){
+			throw new RuntimeException("传入参数不合法");
+		}
+		//计算总金额
+		allTotal = unitPrice.multiply(new BigDecimal(amount));
+		int times = MathUtil.roundDown(allTotal, Constants.ONETHOUSAND);
+		if(times > 0){
+			discountAmount = Constants.TEN.multiply(new BigDecimal(times));
+			realTotal = allTotal.subtract(discountAmount);
+		}else{
+			discountAmount = new BigDecimal(0);
+			realTotal = allTotal;
+		}
+		result.setAllTotal(allTotal);
+		result.setRealTotal(realTotal);
+		result.setDiscountAmount(discountAmount);
+		return result;
 	}
 
 }

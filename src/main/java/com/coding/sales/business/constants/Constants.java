@@ -1,5 +1,7 @@
 package com.coding.sales.business.constants;
 
+import java.math.BigDecimal;
+
 /**
  * 常量类
  * @author SK
@@ -30,15 +32,15 @@ public class Constants {
 	/**
 	 * 350
 	 */
-	public static final int THREEHUNDREDFIFTY = 350;
+	public static final BigDecimal THREEHUNDREDFIFTY = new BigDecimal(350);
 	/**
 	 * 30
 	 */
-	public static final int THIRTY = 30;
+	public static final BigDecimal THIRTY = new BigDecimal(30);
 	/**
 	 * 10
 	 */
-	public static final int TEN = 10;
+	public static final BigDecimal TEN = new BigDecimal(10);
 	/**
 	 * 3
 	 */

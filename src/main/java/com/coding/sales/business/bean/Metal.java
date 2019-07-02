@@ -1,5 +1,6 @@
 package com.coding.sales.business.bean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class Metal {
 	/**
 	 * 单价
 	 */
-	private String price;
+	private BigDecimal price;
 	
 	/**
 	 * 名称
@@ -43,7 +44,7 @@ public class Metal {
 	 */
 	private List<AbstractReductionStrategy> reductionStrategies = new ArrayList<>();
 
-	public Metal(String id, String unit, String price, String name, List<AbstractDiscountStrategy> discountStrategies,
+	public Metal(String id, String unit, BigDecimal price, String name, List<AbstractDiscountStrategy> discountStrategies,
 			List<AbstractReductionStrategy> reductionStrategies) {
 		super();
 		this.id = id;
@@ -54,11 +55,11 @@ public class Metal {
 		this.reductionStrategies = reductionStrategies;
 	}
 	
-	public Metal(String id, String unit, String price, String name, List<AbstractDiscountStrategy> discountStrategies) {
+	public Metal(String id, String unit, BigDecimal price, String name, List<AbstractDiscountStrategy> discountStrategies) {
 		this(id, unit, price, name, discountStrategies, null);
 	}
 	
-	public Metal(String id, String unit, String price, String name) {
+	public Metal(String id, String unit, BigDecimal price, String name) {
 		this(id, unit, price, name, null);
 	}
 
@@ -78,11 +79,11 @@ public class Metal {
 		this.unit = unit;
 	}
 
-	public String getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
