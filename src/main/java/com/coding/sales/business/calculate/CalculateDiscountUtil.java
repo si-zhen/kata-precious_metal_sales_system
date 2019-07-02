@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import com.coding.sales.business.bean.CalculateResult;
 import com.coding.sales.business.bean.Metal;
 import com.coding.sales.business.bean.Result;
 import com.coding.sales.business.strategy.discount.AbstractDiscountStrategy;
@@ -30,8 +31,8 @@ public class CalculateDiscountUtil {
 	 *            用户拥有的打折券
 	 * @return 商品打折后的金额（如果有打折券）
 	 */
-	public static CalculateDiscountResult calMiniestPay(Metal metal, BigDecimal amount, List<String> discountTickets) {
-		CalculateDiscountResult result = new CalculateDiscountResult();
+	public static CalculateResult calMiniestPay(Metal metal, BigDecimal amount, List<String> discountTickets) {
+		CalculateResult result = new CalculateResult();
 		List<AbstractDiscountStrategy> discountStrategies = metal.getDiscountStrategies();
 		boolean hasTickets = discountTickets != null && discountTickets.size() > 0;
 		
@@ -57,44 +58,4 @@ public class CalculateDiscountUtil {
 		
 		return result;
 	}
-
-	public static class CalculateDiscountResult {
-		private String strategyName;
-		private BigDecimal totalMoney;
-		private BigDecimal realPayMoney;
-		private BigDecimal discountMoney;
-
-		public String getStrategyName() {
-			return strategyName;
-		}
-
-		public void setStrategyName(String strategyName) {
-			this.strategyName = strategyName;
-		}
-
-		public BigDecimal getTotalMoney() {
-			return totalMoney;
-		}
-
-		public void setTotalMoney(BigDecimal totalMoney) {
-			this.totalMoney = totalMoney;
-		}
-
-		public BigDecimal getDiscountMoney() {
-			return discountMoney;
-		}
-
-		public void setDiscountMoney(BigDecimal discountMoney) {
-			this.discountMoney = discountMoney;
-		}
-
-		public BigDecimal getRealPayMoney() {
-			return realPayMoney;
-		}
-
-		public void setRealPayMoney(BigDecimal realPayMoney) {
-			this.realPayMoney = realPayMoney;
-		}
-	}
-
 }

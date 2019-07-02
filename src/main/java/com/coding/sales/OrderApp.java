@@ -6,10 +6,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.coding.sales.business.bean.CalculateResult;
 import com.coding.sales.business.bean.Member;
 import com.coding.sales.business.bean.Metal;
 import com.coding.sales.business.calculate.CalculateDiscountUtil;
-import com.coding.sales.business.calculate.CalculateDiscountUtil.CalculateDiscountResult;
+import com.coding.sales.business.calculate.CalculateReductionUtil;
 import com.coding.sales.business.constants.MemberLevel;
 import com.coding.sales.business.db.MemberInfo;
 import com.coding.sales.business.db.MetalInfo;
@@ -72,6 +73,13 @@ public class OrderApp {
 		BigDecimal totalPrice = new BigDecimal(0);
 		BigDecimal receivables = new BigDecimal(0);
 		BigDecimal totalDiscountPrice = new BigDecimal(0);
+		
+		// 打折后的计算结果
+		CalculateResult discountResult = null;
+		// 满减后的计算结果
+		CalculateResult reductionResult = null;
+		// 最终采用的计算结果
+		CalculateResult finalResult = null;
 		for (OrderItemCommand orderItemCommand : items) {
 			String productId = orderItemCommand.getProduct();
 			Metal metal = MetalInfo.findMetalById(productId);
@@ -80,12 +88,19 @@ public class OrderApp {
 			OrderItemRepresentation orderItem = new OrderItemRepresentation(productId, metal.getName(),
 					metal.getPrice(), orderItemCommand.getAmount(), total);
 			orderItems.add(orderItem);
-			CalculateDiscountResult discountResult = CalculateDiscountUtil.calMiniestPay(metal, orderItemCommand.getAmount(), discountTickets);
-			
-			DiscountItemRepresentation discountItemRepresentation = new DiscountItemRepresentation(memberId, metal.getName(), discountResult.getDiscountMoney());
+			discountResult = CalculateDiscountUtil.calMiniestPay(metal, orderItemCommand.getAmount(), discountTickets);
+			reductionResult = CalculateReductionUtil.calMiniestPay(metal, orderItemCommand.getAmount());
+			if (discountResult.getDiscountMoney().compareTo(reductionResult.getDiscountMoney()) > 0) {
+				finalResult = discountResult;
+			} else {
+				finalResult = reductionResult;
+			}
+
+			DiscountItemRepresentation discountItemRepresentation = new DiscountItemRepresentation(memberId,
+					metal.getName(), finalResult.getDiscountMoney());
 			discounts.add(discountItemRepresentation);
-			
-			totalDiscountPrice.add(discountResult.getDiscountMoney());
+
+			totalDiscountPrice.add(finalResult.getDiscountMoney());
 			totalPrice.add(total);
 		}
         //支付整数金额
